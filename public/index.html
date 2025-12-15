@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Chat - IA con Herramientas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <header class="chat-header">
+            <div class="header-content">
+                <h1>🤖 MCP Chat</h1>
+                <p>Inteligencia Artificial con Herramientas MCP</p>
+            </div>
+            <div class="model-selector">
+                <label for="aiModel">Modelo IA:</label>
+                <select id="aiModel">
+                    <option value="openai">OpenAI (GPT-4)</option>
+                    <option value="gemini">Google Gemini</option>
+                    <option value="bedrock">AWS Bedrock (Claude 3.5)</option>
+                    <option value="local">LLM Local</option>
+                </select>
+            </div>
+        </header>
+
+        <main class="chat-main">
+            <!-- Área de mensajes -->
+            <div id="messagesContainer" class="messages-container">
+                <div class="message system-message">
+                    <div class="message-content">
+                        <p>👋 Hola! Soy un asistente de IA con acceso a herramientas MCP.</p>
+                        <p>Puedo obtener información sobre Pokémon usando las herramientas disponibles.</p>
+                        <p>¿En qué puedo ayudarte?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicador de escritura -->
+            <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </main>
+
+        <footer class="chat-footer">
+            <div class="input-area">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="Escribe tu pregunta aquí... (ej: Cuéntame sobre Pikachu)"
+                    rows="3"
+                ></textarea>
+                <button id="sendBtn" class="btn-send">
+                    <span>Enviar</span>
+                    <span class="send-icon">➤</span>
+                </button>
+            </div>
+            <div class="info-bar">
+                <span id="statusIndicator" class="status-indicator">● Listo</span>
+                <span id="toolsUsed" class="tools-info"></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

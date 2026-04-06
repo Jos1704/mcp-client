@@ -1,14 +1,39 @@
-// Elementos del DOM
 const messagesContainer = document.getElementById("messagesContainer");
 const messageInput = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
 const aiModelSelect = document.getElementById("aiModel");
 const typingIndicator = document.getElementById("typingIndicator");
-const statusIndicator = document.getElementById("statusIndicator");
 const toolsUsedSpan = document.getElementById("toolsUsed");
 
 // Estado
 let isLoading = false;
+
+function escapeHtml(text = "") {
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function renderMarkdown(content = "") {
+    if (window.marked && window.DOMPurify) {
+        marked.setOptions({
+            gfm: true,
+            breaks: true
+        });
+
+        const rawHtml = marked.parse(content);
+        return DOMPurify.sanitize(rawHtml, {
+            USE_PROFILES: { html: true }
+        });
+    }
+
+    return escapeHtml(content)
+        .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+        .replace(/\n/g, "<br>");
+}
 
 // Event Listeners
 sendBtn.addEventListener("click", sendMessage);
@@ -26,7 +51,7 @@ async function sendMessage() {
     if (!message || isLoading) return;
 
     // Agregar mensaje del usuario
-    addMessage(message, "user-message");
+    addMessage(message, "user-message", { renderMarkdown: false });
     messageInput.value = "";
     isLoading = true;
     sendBtn.disabled = true;
@@ -72,13 +97,13 @@ async function sendMessage() {
                 assistantContent += `\n\n🔧 Herramientas usadas: ${data.toolsUsed}`;
             }
 
-            addMessage(assistantContent, "assistant-message");
+            addMessage(assistantContent, "assistant-message", { renderMarkdown: true });
             toolsUsedSpan.textContent = `Herramientas usadas: ${data.toolsUsed || 0}`;
         } else {
-            addMessage(`❌ Error: ${data.error}`, "assistant-message");
+            addMessage(`❌ Error: ${data.error}`, "assistant-message", { renderMarkdown: false });
         }
     } catch (error) {
-        addMessage(`❌ Error de conexión: ${error.message}`, "assistant-message");
+        addMessage(`❌ Error de conexión: ${error.message}`, "assistant-message", { renderMarkdown: false });
     } finally {
         isLoading = false;
         sendBtn.disabled = false;
@@ -89,26 +114,21 @@ async function sendMessage() {
 }
 
 // Agregar mensaje a la interfaz
-function addMessage(content, className) {
+function addMessage(content, className, options = {}) {
+    const { renderMarkdown: shouldRenderMarkdown = false } = options;
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${className}`;
 
     const contentDiv = document.createElement("div");
     contentDiv.className = "message-content";
-    
-    // Procesar saltos de línea y hacer URLs clicables
-    const processedContent = content
-        .split("\n")
-        .map((line) => {
-            // Hacer URLs clicables
-            return line.replace(
-                /https?:\/\/[^\s]+/g,
-                (url) => `<a href="${url}" target="_blank" style="color: inherit; text-decoration: underline;">${url}</a>`
-            );
-        })
-        .join("<br>");
 
-    contentDiv.innerHTML = processedContent;
+    if (shouldRenderMarkdown) {
+        contentDiv.classList.add("markdown-content");
+        contentDiv.innerHTML = renderMarkdown(content);
+    } else {
+        contentDiv.textContent = content;
+    }
+
     messageDiv.appendChild(contentDiv);
     messagesContainer.appendChild(messageDiv);
 

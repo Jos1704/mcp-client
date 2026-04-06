@@ -1,4 +1,3 @@
-import { deepStrictEqual } from "assert";
 import fs from "fs/promises";
 
 export type MCPServerEntry = {

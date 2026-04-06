@@ -138,6 +138,92 @@ body {
     border-radius: 0 12px 12px 12px;
 }
 
+.message-content.markdown-content {
+    overflow-x: auto;
+}
+
+.message-content.markdown-content > :first-child {
+    margin-top: 0;
+}
+
+.message-content.markdown-content > :last-child {
+    margin-bottom: 0;
+}
+
+.message-content.markdown-content p,
+.message-content.markdown-content ul,
+.message-content.markdown-content ol,
+.message-content.markdown-content pre,
+.message-content.markdown-content blockquote,
+.message-content.markdown-content table {
+    margin: 0 0 12px;
+}
+
+.message-content.markdown-content ul,
+.message-content.markdown-content ol {
+    padding-left: 20px;
+}
+
+.message-content.markdown-content code {
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Consolas, monospace;
+    font-size: 0.9em;
+    background: rgba(102, 126, 234, 0.08);
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.message-content.markdown-content pre {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 12px;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.message-content.markdown-content pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+.message-content.markdown-content a {
+    color: #4c6ef5;
+    text-decoration: underline;
+}
+
+.message-content.markdown-content blockquote {
+    border-left: 4px solid #c7d2fe;
+    padding-left: 12px;
+    color: #4b5563;
+}
+
+.message-content.markdown-content table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    border: 1px solid #dbe4ff;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.message-content.markdown-content th,
+.message-content.markdown-content td {
+    padding: 10px 12px;
+    border: 1px solid #e9ecef;
+    text-align: left;
+    vertical-align: top;
+}
+
+.message-content.markdown-content th {
+    background: #edf2ff;
+    font-weight: 700;
+}
+
+.message-content.markdown-content tbody tr:nth-child(even) {
+    background: #f8f9ff;
+}
+
 .system-message .message-content {
     background: transparent;
     color: #666;
@@ -307,6 +393,10 @@ body {
 
     .message-content {
         max-width: 85%;
+    }
+
+    .message-content.markdown-content table {
+        min-width: 460px;
     }
 
     .model-selector {

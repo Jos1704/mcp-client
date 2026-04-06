@@ -45,7 +45,7 @@ async function sendMessage() {
 
         const modelId =
             aiModel === "openai"
-                ? "gpt-4"
+                ? "gpt-4.1-mini"
                 : aiModel === "gemini"
                 ? "gemini-pro"
                 : aiModel === "bedrock"

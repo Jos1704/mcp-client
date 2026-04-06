@@ -17,6 +17,24 @@ function withDefaultTenant(args: Record<string, any> = {}) {
   return { tenant: DEFAULT_TENANT, ...args };
 }
 
+function sanitizeToolSchemaForClient(inputSchema: any) {
+  if (!inputSchema || typeof inputSchema !== "object") return inputSchema;
+
+  const schema = { ...inputSchema };
+
+  if (schema.properties && typeof schema.properties === "object") {
+    const properties = { ...schema.properties };
+    delete properties.tenant;
+    schema.properties = properties;
+  }
+
+  if (Array.isArray(schema.required)) {
+    schema.required = schema.required.filter((field: string) => field !== "tenant");
+  }
+
+  return schema;
+}
+
 function normalizeUrls(serverUrls: string[]): string[] {
   return Array.from(new Set((serverUrls || []).filter(Boolean)));
 }
@@ -44,7 +62,7 @@ export async function getMCPTools(serverUrl?: string): Promise<MCPTool[]> {
       return response.tools.map((tool) => ({
         name: tool.name,
         description: tool.description || "Sin descripción",
-        inputSchema: tool.inputSchema
+        inputSchema: sanitizeToolSchemaForClient(tool.inputSchema)
       }));
     }
 
@@ -85,7 +103,6 @@ export async function executeMCPTool(
     const result = await client.callTool({ name: toolName, arguments: toolArgs });
     return result;
   }
-  console.log(args);
   // Sin URL: intentar en todos los servidores configurados y devolver el primer éxito
   const urls = await loadServerUrls();
   if (!urls.length) throw new Error("No hay servidores configurados en mcp.json ni en MCP_SERVERS");

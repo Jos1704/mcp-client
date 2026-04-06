@@ -19,7 +19,6 @@ function dedupe(urls: string[]): string[] {
 
 export async function loadMCPConfig(configPath?: string): Promise<MCPConfig | null> {
   const path = configPath || DEFAULT_CONFIG_PATH;
-  console.log('HOLA')
   try {
     const raw = await fs.readFile(path, "utf8");
     const json = JSON.parse(raw);

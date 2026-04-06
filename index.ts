@@ -24,8 +24,6 @@ const localLLMService = new LocalLLMService();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// MCP utils están en src/utils/mcp.ts
-
 // API: Chat con OpenAI
 app.post("/api/chat/openai", async (req, res) => {
   try {
@@ -110,7 +108,6 @@ app.listen(PORT, () => {
   console.log(`╚════════════════════════════════════════════════════════╝\n`);
   console.log(`🌐 Servidor ejecutándose en: http://localhost:${PORT}`);
   console.log(`🤖 Modelos disponibles: OpenAI (GPT-4) y Google Gemini`);
-  console.log(`📡 Conectando a MCP en: http://localhost:8000/pokemon\n`);
   console.log(`⚙️  Variables de entorno requeridas:`);
   console.log(`   - OPENAI_API_KEY (para usar OpenAI)`);
   console.log(`   - GEMINI_API_KEY (para usar Gemini)\n`);

@@ -1,0 +1,5 @@
+{
+  "servers": [
+    { "id": "sabbi-periodos", "url": "http://sabbi.test/mcp/period" }
+  ]
+}
